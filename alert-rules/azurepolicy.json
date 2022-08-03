@@ -1,0 +1,27 @@
+{
+  "mode": "All",
+  "parameters": {},
+  "displayName": "Add Alert Rules for common metrics",
+  "description": "Add Alert Rules for common metrics",
+  "policyRule": {
+    "if": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "field": "type",
+              "equals": "Microsoft.Insights/actionGroups"
+            },
+            {
+              "field": "Microsoft.Insights/activityLogAlerts/actions.actionGroups[*]",
+              "exists": false
+            }
+          ]
+        }
+      ]
+    },
+    "then": {
+      "effect": "modify"
+    }
+  }
+}
