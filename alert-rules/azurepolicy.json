@@ -10,7 +10,7 @@
           "allOf": [
             {
               "field": "type",
-              "equals": "Microsoft.Insights/actionGroups"
+              "equals": "Microsoft.Compute/virtualMachines"
             },
             {
               "field": "Microsoft.Insights/activityLogAlerts/actions.actionGroups[*]",
