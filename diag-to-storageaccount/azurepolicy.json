@@ -129,12 +129,14 @@
               },
               "profileName": {
                 "value": "[parameters('profileName')]"
+              },
+              "location": {
+                "value": "[parameters('location')]"
               }
             }
           },
-          "location": "[parameters('location')]"
-        },
-        "deploymentScope": "subscription"
+          "deploymentScope": "subscription"
+        }
       }
     }
   }
