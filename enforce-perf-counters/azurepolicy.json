@@ -13,7 +13,7 @@
               "equals": "Microsoft.Compute/virtualMachines"
             },
             {
-              "field": "Microsoft.Compute/virtualMachines/extensions/resources[*].settings/WadCfg/PerformanceCounters/PerformanceCounterConfiguration}",
+              "field": "Microsoft.Compute/virtualMachines/extensions/resources[*].settings/WadCfg/PerformanceCounters/PerformanceCounterConfiguration",
               "exists": false
             }
           ]
@@ -25,7 +25,7 @@
               "equals": "Microsoft.Compute/virtualMachineScaleSets"
             },
             {
-              "field": "Microsoft.Compute/virtualMachineScaleSets/virtualMachines/extensions.settings/WadCfg/PerformanceCounters/PerformanceCounterConfiguration}",
+              "field": "Microsoft.Compute/virtualMachineScaleSets/virtualMachines/extensions.settings/WadCfg/PerformanceCounters/PerformanceCounterConfiguration",
               "exists": false
             }
           ]
