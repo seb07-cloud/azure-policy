@@ -30,16 +30,11 @@
     },
     "policyRule": {
       "if": {
-        "allOf": [
-          {
-            "field": "type",
-            "equals": "Microsoft.Compute/virtualMachines"
-          }
-        ]
+        "field": "type",
+        "equals": "Microsoft.Compute/virtualMachines"
       },
       "then": {
         "effect": "[parameters('effect')]",
-        "logAnalytics": "[parameters('logAnalytics')]",
         "details": {
           "type": "Microsoft.Insights/dataCollectionRules",
           "existenceCondition": {
@@ -73,6 +68,9 @@
                     "type": "string"
                   },
                   "location": {
+                    "type": "string"
+                  },
+                  "logAnalytics": {
                     "type": "string"
                   }
                 },
@@ -151,6 +149,9 @@
                 },
                 "location": {
                   "value": "[field('location')]"
+                },
+                "logAnalytics": {
+                  "value": "[parameters('logAnalytics')]"
                 }
               }
             }
