@@ -1,51 +1,143 @@
 {
-  "mode": "All",
-  "parameters": {},
-  "displayName": "Audit - Azure Virtual Machines should have encryption at host enabled",
-  "description": "Ensure end-to-end encryption of a Virtual Machines Managed Disks with encryption at host: https://docs.microsoft.com/en-us/azure/virtual-machines/disk-encryption#encryption-at-host---end-to-end-encryption-for-your-vm-data",
-  "policyRule": {
-    "if": {
-      "anyOf": [
-        {
-          "allOf": [
-            {
-              "field": "type",
-              "equals": "Microsoft.Compute/virtualMachines"
-            },
-            {
-              "field": "Microsoft.Compute/virtualMachines/extensions/resources[*].settings/WadCfg/PerformanceCounters/PerformanceCounterConfiguration",
-              "exists": false
-            }
-          ]
-        },
-        {
-          "allOf": [
-            {
-              "field": "type",
-              "equals": "Microsoft.Compute/virtualMachineScaleSets"
-            },
-            {
-              "field": "Microsoft.Compute/virtualMachineScaleSets/virtualMachines/extensions.settings/WadCfg/PerformanceCounters/PerformanceCounterConfiguration",
-              "exists": false
-            }
-          ]
-        },
-        {
-          "allOf": [
-            {
-              "field": "type",
-              "equals": "Microsoft.Compute/virtualMachineScaleSets/virtualMachines"
-            },
-            {
-              "field": "Microsoft.Compute/virtualMachineScaleSets/virtualmachines/securityProfile.encryptionAtHost",
-              "exists": false
-            }
-          ]
-        }
-      ]
+  "properties": {
+    "displayName": "Add Performance metrics",
+    "policyType": "Custom",
+    "mode": "All",
+    "description": "Add Performance metrics",
+    "metadata": {
+      "version": "1.0.1-preview",
+      "category": "Metrics"
     },
-    "then": {
-      "effect": "modify"
+    "parameters": {
+      "effect": {
+        "type": "String",
+        "metadata": {
+          "displayName": "Effect",
+          "description": "Enable or disable the execution of the policy"
+        },
+        "allowedValues": ["Audit"],
+        "defaultValue": "Audit"
+      },
+      "metricName": {
+        "type": "String"
+      }
+    },
+    "policyRule": {
+      "if": {
+        "field": "type",
+        "equals": "Microsoft.Compute/virtualMachines"
+      },
+      "then": {
+        "effect": "[parameters('effect')]",
+        "details": {
+          "type": "Microsoft.Insights/dataCollectionRules",
+          "existenceScope": "Subscription",
+          "existenceCondition": {
+            "allOf": [
+              {
+                "field": "Microsoft.Insights/dataCollectionRules/dataSources.performanceCounters[*]",
+                "equals": "[parameters('metricName')]"
+              }
+            ]
+          },
+          "deployment": {
+            "properties": {
+              "mode": "incremental",
+              "template": {
+                "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+                "contentVersion": "1.0.0.0",
+                "parameters": {
+                  "vmName": {
+                    "type": "string"
+                  },
+                  "location": {
+                    "type": "string"
+                  }
+                },
+                "resources": [
+                  {
+                    "type": "Microsoft.Insights/dataCollectionRules",
+                    "name": "[parameters('defaultHealthDataCollectionRuleName')]",
+                    "location": "[parameters('dataCollectionRuleLocation')]",
+                    "apiVersion": "2019-11-01-preview",
+                    "properties": {
+                      "description": "Data collection rule for VM Insights health.",
+                      "dataSources": {
+                        "performanceCounters": [
+                          {
+                            "name": "VMHealthPerfCounters",
+                            "streams": ["Microsoft-Perf"],
+                            "scheduledTransferPeriod": "PT1M",
+                            "samplingFrequencyInSeconds": 60,
+                            "counterSpecifiers": [
+                              "\\LogicalDisk(*)\\% Free Space",
+                              "\\Memory\\Available Bytes",
+                              "\\Processor(_Total)\\% Processor Time",
+                              "\\Memory\\% Committed Bytes In Use"
+                            ]
+                          }
+                        ],
+                        "extensions": [
+                          {
+                            "name": "Microsoft-VMInsights-Health",
+                            "streams": ["Microsoft-HealthStateChange"],
+                            "extensionName": "HealthExtension",
+                            "extensionSettings": {
+                              "schemaVersion": "1.0",
+                              "contentVersion": "",
+                              "healthRuleOverrides": [
+                                {
+                                  "scopes": ["*"],
+                                  "monitors": ["root"],
+                                  "alertConfiguration": {
+                                    "isEnabled": true
+                                  }
+                                }
+                              ]
+                            },
+                            "inputDataSources": ["VMHealthPerfCounters"]
+                          }
+                        ]
+                      },
+                      "destinations": {
+                        "logAnalytics": [
+                          {
+                            "workspaceResourceId": "[parameters('destinationWorkspaceResourceId')]",
+                            "name": "Microsoft-HealthStateChange-Dest"
+                          }
+                        ]
+                      },
+                      "dataFlows": [
+                        {
+                          "streams": ["Microsoft-HealthStateChange"],
+                          "destinations": ["Microsoft-HealthStateChange-Dest"]
+                        }
+                      ]
+                    }
+                  }
+                ],
+                "outputs": {
+                  "policy": {
+                    "type": "string",
+                    "value": "[concat('Enabled DA extension for VM', ': ', parameters('vmName'))]"
+                  }
+                }
+              },
+              "parameters": {
+                "vmName": {
+                  "value": "[field('name')]"
+                },
+                "location": {
+                  "value": "[field('location')]"
+                }
+              }
+            }
+          }
+        }
+      }
     }
-  }
+  },
+  "id": "/providers/Microsoft.Authorization/policyDefinitions/deacecc0-9f84-44d2-bb82-46f32d766d43",
+  "type": "Microsoft.Authorization/policyDefinitions",
+  "name": "deacecc0-9f84-44d2-bb82-46f32d766d43"
 }
