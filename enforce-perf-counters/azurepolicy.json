@@ -15,17 +15,22 @@
           "displayName": "Effect",
           "description": "Enable or disable the execution of the policy"
         },
-        "allowedValues": ["Audit"],
-        "defaultValue": "Audit"
-      },
-      "metricName": {
-        "type": "String"
+        "allowedValues": ["DeployIfNotExists", "Disabled"],
+        "defaultValue": "DeployIfNotExists"
       }
     },
     "policyRule": {
       "if": {
-        "field": "type",
-        "equals": "Microsoft.Compute/virtualMachines"
+        "allOf": [
+          {
+            "field": "type",
+            "equals": "Microsoft.Compute/virtualMachines"
+          },
+          {
+            "field": "Microsoft.Compute/machines/osName",
+            "equals": "windows"
+          }
+        ]
       },
       "then": {
         "effect": "[parameters('effect')]",
@@ -35,8 +40,20 @@
           "existenceCondition": {
             "allOf": [
               {
-                "field": "Microsoft.Insights/dataCollectionRules/dataSources.performanceCounters[*]",
-                "equals": "[parameters('metricName')]"
+                "field": "Microsoft.Insights/dataCollectionRules/dataSources.performanceCounters[*].name",
+                "equals": "\\LogicalDisk(*)\\% Free Space"
+              },
+              {
+                "field": "Microsoft.Insights/dataCollectionRules/dataSources.performanceCounters[*].name",
+                "equals": "\\Memory\\Available Bytes"
+              },
+              {
+                "field": "Microsoft.Insights/dataCollectionRules/dataSources.performanceCounters[*].name",
+                "equals": "\\Processor(_Total)\\% Processor Time"
+              },
+              {
+                "field": "Microsoft.Insights/dataCollectionRules/dataSources.performanceCounters[*].name",
+                "equals": "\\Memory\\% Committed Bytes In Use"
               }
             ]
           },
@@ -119,7 +136,7 @@
                 "outputs": {
                   "policy": {
                     "type": "string",
-                    "value": "[concat('Enabled DA extension for VM', ': ', parameters('vmName'))]"
+                    "value": "[concat('Enabled Performance Counter / Custom Metric for VM', ': ', parameters('vmName'))]"
                   }
                 }
               },
