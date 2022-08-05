@@ -76,6 +76,49 @@
                 },
                 "resources": [
                   {
+                    "name": "subscriptionToLa",
+                    "type": "Microsoft.Insights/diagnosticSettings",
+                    "apiVersion": "2017-05-01-preview",
+                    "location": "Global",
+                    "properties": {
+                      "workspaceId": "[parameters('logAnalytics')]",
+                      "logs": [
+                        {
+                          "category": "Administrative",
+                          "enabled": "[parameters('logsEnabled')]"
+                        },
+                        {
+                          "category": "Security",
+                          "enabled": "[parameters('logsEnabled')]"
+                        },
+                        {
+                          "category": "ServiceHealth",
+                          "enabled": "[parameters('logsEnabled')]"
+                        },
+                        {
+                          "category": "Alert",
+                          "enabled": "[parameters('logsEnabled')]"
+                        },
+                        {
+                          "category": "Recommendation",
+                          "enabled": "[parameters('logsEnabled')]"
+                        },
+                        {
+                          "category": "Policy",
+                          "enabled": "[parameters('logsEnabled')]"
+                        },
+                        {
+                          "category": "Autoscale",
+                          "enabled": "[parameters('logsEnabled')]"
+                        },
+                        {
+                          "category": "ResourceHealth",
+                          "enabled": "[parameters('logsEnabled')]"
+                        }
+                      ]
+                    }
+                  },
+                  {
                     "type": "Microsoft.Insights/dataCollectionRules",
                     "name": "[parameters('defaultHealthDataCollectionRuleName')]",
                     "location": "[parameters('dataCollectionRuleLocation')]",
