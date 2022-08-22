@@ -4,7 +4,7 @@ Enforces a required tag and its value on resource groups.
 
 ## Try on Portal
 
-[![Deploy to Azure](http://azuredeploy.net/deploybutton.png)](https://portal.azure.com/#blade/Microsoft_Azure_Policy/CreatePolicyDefinitionBlade/uri/https://raw.githubusercontent.com/seb07-cloud/azure-policy/main/tagging/enforce-ressource-group-tags/azurepolicy.json)
+[![Deploy to Azure](http://azuredeploy.net/deploybutton.png)](https%3A%2F%2Fportal.azure.com%2F%23blade%2FMicrosoft_Azure_Policy%2FCreatePolicyDefinitionBlade%2Furi%2Fhttps%3A%2F%2Fraw.githubusercontent.com%2Fseb07-cloud%2Fazure-policy%2Fmain%2Ftagging%2Fenforce-ressource-group-tags%2Fazurepolicy.json)
 
 ## Try with PowerShell
 
