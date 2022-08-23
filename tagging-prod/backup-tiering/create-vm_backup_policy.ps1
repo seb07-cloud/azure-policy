@@ -4,11 +4,6 @@
 .DESCRIPTION
     This script will create three enhanced and one standard Azure Backup policies
 .NOTES
-
-.LINK
-    https://github.com/fbinotto/backup-tiering-automation/blob/main/Create-VMBackupPolicy.ps1
-.EXAMPLE
-    PS>.\Create-VMBackupPolicy.ps1
 #>
 
 # Create schedule and retention policy objects
