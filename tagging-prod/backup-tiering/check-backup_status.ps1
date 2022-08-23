@@ -28,7 +28,7 @@
     
     VM_Name                         : vcloud-lab-vm01
     VM_Location                     : uksouth
-    VM_ResourceGroupName            : VCLOUD-LAB.COM
+    VM_ResourceGroupName            : VCLOUD-LAB
     VM_BackedUp                     : True
     VM_RecoveryVaultName            : vault828
     VM_RecoveryVaultPolicy          : DailyPolicy-kosrnox0
@@ -39,7 +39,7 @@
     VM_BackupDeleteState            : NotDeleted
     VM_BackupLatestRecoveryPoint    : 27-05-2021 19:32:37
     VM_Id                           : /subscriptions/9e22xxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx/resourceGroups/VCLOUD-LAB.COM/providers/Microsoft.Compute/virtualMachines/vcloud-lab-vm01
-    RecoveryVault_ResourceGroupName : vCloud-lab.com
+    RecoveryVault_ResourceGroupName : vCloud-lab
     RecoveryVault_Location          : uksouth
     RecoveryVault_SubscriptionId    : /subscriptions/9e22xxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx/resourceGroups/vCloud-lab.com/providers/Microsoft.RecoveryServices/vaults/vault828
 
