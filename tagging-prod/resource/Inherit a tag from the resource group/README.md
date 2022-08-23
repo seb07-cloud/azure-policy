@@ -1,28 +1,8 @@
-# Enforce tag and its value on resource groups
+# Inherit a tag from the resource group
 
-Enforces a required tag and its value on resource groups.
+Inherits an existing tag from a resource group
 
 ## Try on Portal
 
-[![Deploy to Azure](http://azuredeploy.net/deploybutton.png)](https://portal.azure.com/#blade/Microsoft_Azure_Policy/CreatePolicyDefinitionBlade/uri/https%3A%2F%2Fportal.azure.com%2F%23blade%2FMicrosoft_Azure_Policy%2FCreatePolicyDefinitionBlade%2Furi%2Fhttps%3A%2F%2Fraw.githubusercontent.com%2Fseb07-cloud%2Fazure-policy%2Fmain%2Ftagging%2Fenforce-ressource-group-tags%2Fazurepolicy.json)
+[![Deploy to Azure](http://azuredeploy.net/deploybutton.png)](https%3A%2F%2Fgithub.com%2Fseb07-cloud%2Fazure-policy%2Fblob%2F8114e5831f654d37d9a18411e6bb39ce609d2e47%2Ftagging-prod%2Fresource%2FInherit%2520a%2520tag%2520from%2520the%2520resource%2520group%2Fazurepolicy.json)
 
-## Try with PowerShell
-
-````powershell
-$definition = New-AzPolicyDefinition -Name "enforce-resourceGroup-tags" -DisplayName "Enforce tag and its value on resource groups" -description "Enforces a required tag and its value on resource groups." -Policy 'https://raw.githubusercontent.com/Azure/azure-policy/master/samples/ResourceGroup/enforce-resourceGroup-tags/azurepolicy.rules.json' -Parameter 'https://raw.githubusercontent.com/Azure/azure-policy/master/samples/ResourceGroup/enforce-resourceGroup-tags/azurepolicy.parameters.json' -Mode All
-$definition
-$assignment = New-AzPolicyAssignment -Name <assignmentname> -Scope <scope>  -tagName <tagName> -tagValue <tagValue> -PolicyDefinition $definition
-$assignment 
-````
-
-
-
-## Try with CLI
-
-````cli
-
-az policy definition create --name 'enforce-resourceGroup-tags' --display-name 'Enforce tag and its value on resource groups' --description 'Enforces a required tag and its value on resource groups.' --rules 'https://raw.githubusercontent.com/Azure/azure-policy/master/samples/ResourceGroup/enforce-resourceGroup-tags/azurepolicy.rules.json' --params 'https://raw.githubusercontent.com/Azure/azure-policy/master/samples/ResourceGroup/enforce-resourceGroup-tags/azurepolicy.parameters.json' --mode All
-
-az policy assignment create --name <assignmentname> --scope <scope> --policy "enforce-resourceGroup-tags" 
-
-````

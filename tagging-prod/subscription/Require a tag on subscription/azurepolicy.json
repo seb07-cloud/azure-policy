@@ -1,19 +1,19 @@
 {
   "properties": {
-    "displayName": "Enforce tag and its value on resource groups",
-    "description": "Enforces a required tag and its value on resource groups.",
+    "displayName": "Require a tag on a subscription",
+    "policyType": "BuiltIn",
     "mode": "All",
+    "description": "Enforces existence of a tag on a subscription.",
+    "metadata": {
+      "version": "1.0.0",
+      "category": "Tags"
+    },
     "parameters": {
       "tagName": {
         "type": "String",
         "metadata": {
-          "description": "Name of the tag, such as costCenter"
-        }
-      },
-      "tagValue": {
-        "type": "String",
-        "metadata": {
-          "description": "Value of the tag, such as headquarter"
+          "displayName": "Tag Name",
+          "description": "Name of the tag, such as 'environment'"
         }
       }
     },
@@ -22,13 +22,11 @@
         "allOf": [
           {
             "field": "type",
-            "equals": "Microsoft.Resources/subscriptions/resourceGroups"
+            "equals": "Microsoft.Resources/subscriptions"
           },
           {
-            "not": {
-              "field": "[concat('tags[',parameters('tagName'), ']')]",
-              "equals": "[parameters('tagValue')]"
-            }
+            "field": "[concat('tags[', parameters('tagName'), ']')]",
+            "exists": "false"
           }
         ]
       },
@@ -36,5 +34,7 @@
         "effect": "deny"
       }
     }
-  }
+  },
+  "id": "/providers/Microsoft.Authorization/policyDefinitions/96670d01-0a4d-4649-9c89-2d3abc0a5025",
+  "name": "96670d01-0a4d-4649-9c89-2d3abc0a5025"
 }

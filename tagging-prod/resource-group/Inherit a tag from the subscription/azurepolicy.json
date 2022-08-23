@@ -1,19 +1,19 @@
 {
   "properties": {
-    "displayName": "Enforce tag and its value on resource groups",
-    "description": "Enforces a required tag and its value on resource groups.",
-    "mode": "All",
+    "displayName": "Inherit a tag from the subscription",
+    "policyType": "BuiltIn",
+    "mode": "Indexed",
+    "description": "Adds or replaces the specified tag and value from the containing subscription when any resource is created or updated. Existing resources can be remediated by triggering a remediation task.",
+    "metadata": {
+      "category": "Tags",
+      "version": "1.0.0"
+    },
     "parameters": {
       "tagName": {
         "type": "String",
         "metadata": {
-          "description": "Name of the tag, such as costCenter"
-        }
-      },
-      "tagValue": {
-        "type": "String",
-        "metadata": {
-          "description": "Value of the tag, such as headquarter"
+          "displayName": "Tag Name",
+          "description": "Name of the tag, such as 'environment'"
         }
       }
     },
@@ -21,20 +21,32 @@
       "if": {
         "allOf": [
           {
-            "field": "type",
-            "equals": "Microsoft.Resources/subscriptions/resourceGroups"
+            "field": "[concat('tags[', parameters('tagName'), ']')]",
+            "notEquals": "[subscription().tags[parameters('tagName')]]"
           },
           {
-            "not": {
-              "field": "[concat('tags[',parameters('tagName'), ']')]",
-              "equals": "[parameters('tagValue')]"
-            }
+            "value": "[subscription().tags[parameters('tagName')]]",
+            "notEquals": ""
           }
         ]
       },
       "then": {
-        "effect": "deny"
+        "effect": "modify",
+        "details": {
+          "roleDefinitionIds": [
+            "/providers/microsoft.authorization/roleDefinitions/b24988ac-6180-42a0-ab88-20f7382dd24c"
+          ],
+          "operations": [
+            {
+              "operation": "addOrReplace",
+              "field": "[concat('tags[', parameters('tagName'), ']')]",
+              "value": "[subscription().tags[parameters('tagName')]]"
+            }
+          ]
+        }
       }
     }
-  }
+  },
+  "id": "/providers/Microsoft.Authorization/policyDefinitions/b27a0cbd-a167-4dfa-ae64-4337be671140",
+  "name": "b27a0cbd-a167-4dfa-ae64-4337be671140"
 }
