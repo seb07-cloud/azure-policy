@@ -1,6 +1,5 @@
 [CmdletBinding(SupportsShouldProcess = $True,
     ConfirmImpact = 'Medium',
-    HelpURI = 'http://vcloud-lab.com',
     DefaultParameterSetName = 'AllVirtualMachines'
 )]
 
